@@ -1,4 +1,4 @@
-from mgnifyextract.studies import find_studies, get_study_samples, get_superstudy_studies
+from mgnifyextract.studies import find_studies, get_study_samples, get_superstudy_studies, get_study
 from mgnifyextract.samples import get_sample_runs
 from mgnifyextract.runs import get_run_analyses
 from mgnifyextract.analyses import get_analysis_downloads
@@ -23,8 +23,10 @@ logging.getLogger("urllib3").setLevel(logging.INFO)
 #studies = get_superstudy_studies("atlanteco")
 
 
-samples = get_study_samples("MGYS00000462", max_results=2)
-print(len(samples))
+study = get_study("MGYS00000462")
+print(json.dumps(study, indent=2))
+#samples = get_study_samples("MGYS00000462", max_results=2)
+#print(json.dumps(samples, indent=2))
 #runs = get_sample_runs(samples[0]["id"])
 #analyses = get_run_analyses(runs[0]["id"])
 #downloads = get_analysis_downloads(analyses[0]["id"])
