@@ -20,9 +20,12 @@ logging.getLogger("urllib3").setLevel(logging.INFO)
 #studies = find_studies(filters, max_results=1)
 
 
-studies = get_superstudy_studies("atlanteco")
-samples = get_study_samples(studies[0]["id"])
-runs = get_sample_runs(samples[0]["id"])
-analyses = get_run_analyses(runs[0]["id"])
-downloads = get_analysis_downloads(analyses[0]["id"])
-print(json.dumps(downloads, indent=2))
+#studies = get_superstudy_studies("atlanteco")
+
+
+samples = get_study_samples("MGYS00000462", max_results=2)
+print(len(samples))
+#runs = get_sample_runs(samples[0]["id"])
+#analyses = get_run_analyses(runs[0]["id"])
+#downloads = get_analysis_downloads(analyses[0]["id"])
+#print(json.dumps(downloads, indent=2))

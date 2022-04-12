@@ -23,7 +23,7 @@ def paginate(url, max_results=None):
                 url = next
             else:
                 break
-        if max_results is not None and len(results >= max_results):
+        if max_results is not None and len(results) >= max_results:
             results = results[:max_results]
             break
 
