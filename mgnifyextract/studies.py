@@ -1,8 +1,7 @@
 import logging
 import mgnifyextract
 from urllib.parse import urlencode
-from mgnifyextract.util import paginate
-import requests
+from mgnifyextract.util import paginate, get_entity
 
 
 logger = logging.getLogger(__name__)
@@ -25,15 +24,7 @@ def get_study(accession):
         "format": "json"
     }
     url = mgnifyextract.API_URL + f"/studies/{accession}?" + urlencode(params)
-    res = requests.get(url)
-    logger.debug(res.url)
-    if res.status_code != 200:
-        message = f"Unexpected status code {res.status_code} for {url}"
-        logger.error(message)
-        raise RuntimeError(message)
-    else:
-        data = res.json()["data"]
-        return data
+    return get_entity(url)
 
 
 def get_study_samples(accession, max_results=None):

@@ -5,6 +5,17 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+def get_entity(url):
+    res = requests.get(url)
+    logger.debug(res.url)
+    if res.status_code != 200:
+        message = f"Unexpected status code {res.status_code} for {url}"
+        logger.error(message)
+        raise RuntimeError(message)
+    else:
+        return res.json()["data"]
+
+
 def paginate(url, max_results=None):
     results = []
 
