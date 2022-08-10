@@ -1,3 +1,5 @@
+from turtle import down
+from mgnifyextract import analyses
 from mgnifyextract.studies import find_studies, get_study_samples, get_superstudy_studies, get_study
 from mgnifyextract.samples import get_sample_runs
 from mgnifyextract.runs import get_run_analyses
@@ -23,11 +25,17 @@ logging.getLogger("urllib3").setLevel(logging.INFO)
 #studies = get_superstudy_studies("atlanteco")
 
 
-study = get_study("MGYS00000462")
+study_id = "MGYS00000462"
+study = get_study(study_id)
 print(json.dumps(study, indent=2))
-#samples = get_study_samples("MGYS00000462", max_results=2)
-#print(json.dumps(samples, indent=2))
-#runs = get_sample_runs(samples[0]["id"])
-#analyses = get_run_analyses(runs[0]["id"])
-#downloads = get_analysis_downloads(analyses[0]["id"])
+samples = get_study_samples(study_id, max_results=2)
+print(json.dumps(samples, indent=2))
+runs = get_sample_runs(samples[0]["id"])
+analyses = get_run_analyses(runs[0]["id"])
+downloads = get_analysis_downloads(analyses[0]["id"])
+print(json.dumps(downloads, indent=2))
+
+#downloads = analyses.get_analysis_downloads("MGYA00593781")
 #print(json.dumps(downloads, indent=2))
+
+#analyses.read_fasta_files("MGYA00199483")

@@ -19,7 +19,7 @@ def find_studies(filters, max_results=None):
 
 
 def get_study(accession):
-    logger.info(f"Getting study {accession}")
+    logger.debug(f"Getting study {accession}")
     params = {
         "format": "json"
     }
@@ -28,7 +28,7 @@ def get_study(accession):
 
 
 def get_study_samples(accession, max_results=None):
-    logger.info(f"Getting samples for study {accession}")
+    logger.debug(f"Getting samples for study {accession}")
     params = {
         "format": "json"
     }
@@ -50,7 +50,7 @@ def find_superstudies(filters, max_results=None):
 
 
 def get_superstudy_studies(accession, max_results=None):
-    logger.info(f"Getting studies for super-study {accession}")
+    logger.debug(f"Getting studies for super-study {accession}")
     params = {
         "format": "json"
     }

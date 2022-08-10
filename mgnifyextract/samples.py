@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 def get_sample_runs(accession, max_results=None):
-    logger.info(f"Getting runs for sample {accession}")
+    logger.debug(f"Getting runs for sample {accession}")
     params = {
         "format": "json"
     }

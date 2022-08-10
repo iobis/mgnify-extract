@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 def get_entity(url):
     res = requests.get(url)
-    logger.debug(res.url)
+    logger.debug(f"Fetching {res.url}")
     if res.status_code != 200:
         message = f"Unexpected status code {res.status_code} for {url}"
         logger.error(message)
@@ -21,7 +21,7 @@ def paginate(url, max_results=None):
 
     while True:
         res = requests.get(url)
-        logger.debug(res.url)
+        logger.debug(f"Fetching {res.url}")
         if res.status_code != 200:
             message = f"Unexpected status code {res.status_code} for {url}"
             logger.error(message)
