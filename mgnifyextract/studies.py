@@ -2,8 +2,6 @@ from __future__ import annotations
 from collections import UserDict
 import logging
 from typing import Dict, List
-from mgnifyextract import API_URL
-from urllib.parse import urlencode
 from mgnifyextract.samples import Sample
 from mgnifyextract.util import fetch_object, fetch_objects
 
@@ -11,7 +9,7 @@ from mgnifyextract.util import fetch_object, fetch_objects
 logger = logging.getLogger(__name__)
 
 
-def find_studies(filters: Dict, max_results: int=None) -> List[Study]:
+def find_studies(filters: Dict, max_results: int = None) -> List[Study]:
     results = fetch_objects("studies", filters=filters, max_results=max_results)
     return [Study(result) for result in results]
 
@@ -21,17 +19,17 @@ def get_study(accession: str) -> Study:
     return Study(study)
 
 
-def get_study_samples(accession: str, max_results: int=None) -> List[Sample]:
+def get_study_samples(accession: str, max_results: int = None) -> List[Sample]:
     results = fetch_objects("studies", accession, "samples", max_results=max_results)
     return [Sample(result) for result in results]
 
 
-def find_superstudies(filters: Dict, max_results: int=None) -> List[SuperStudy]:
+def find_superstudies(filters: Dict, max_results: int = None) -> List[SuperStudy]:
     results = fetch_objects("super-studies", filters=filters, max_results=max_results)
     return [SuperStudy(result) for result in results]
 
 
-def get_superstudy_studies(accession: str, max_results: int=None) -> List[Study]:
+def get_superstudy_studies(accession: str, max_results: int = None) -> List[Study]:
     results = fetch_objects("super-studies", accession, "flagship-studies", max_results=max_results)
     return [Study(result) for result in results]
 

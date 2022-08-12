@@ -24,7 +24,7 @@ def fetch_object(name: str, accession: str) -> Dict:
         return res.json()["data"]
 
 
-def fetch_objects(name: str, accession: str=None, child_name: str=None, filters: Dict=None, max_results: int=None):
+def fetch_objects(name: str, accession: str = None, child_name: str = None, filters: Dict = None, max_results: int = None):
     params = {
         "format": "json"
     }

@@ -8,13 +8,13 @@ from mgnifyextract.util import fetch_objects
 logger = logging.getLogger(__name__)
 
 
-def get_run_analyses(accession: str, max_results: int=None) -> List[Analysis]:
+def get_run_analyses(accession: str, max_results: int = None) -> List[Analysis]:
     results = fetch_objects("runs", accession, "analyses", max_results=max_results)
     return [Analysis(result) for result in results]
 
 
 class Run(UserDict):
-    
+
     def get_analyses(self) -> List[Analysis]:
         return get_run_analyses(self.data["id"])
 

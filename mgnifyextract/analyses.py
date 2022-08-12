@@ -13,7 +13,7 @@ import gzip
 logger = logging.getLogger(__name__)
 
 
-def get_analysis_downloads(accession: str, max_results: int=None) -> List[Download]:
+def get_analysis_downloads(accession: str, max_results: int = None) -> List[Download]:
     results = fetch_objects("analyses", accession, "downloads", max_results=max_results)
     return [Download(result) for result in results]
 
@@ -21,7 +21,7 @@ def get_analysis_downloads(accession: str, max_results: int=None) -> List[Downlo
 def read_fasta_files(accession: str):
     downloads = get_analysis_downloads(accession)
     for download in [d for d in downloads if d["id"].endswith("SSU.fasta.gz") or d["id"].endswith("LSU.fasta.gz")]:
-        
+
         with urlopen(download["links"]["self"]) as src, NamedTemporaryFile() as gz:
             copyfileobj(src, gz)
             with NamedTemporaryFile() as fasta:
@@ -31,7 +31,7 @@ def read_fasta_files(accession: str):
 
 
 class Analysis(UserDict):
-    
+
     def get_downloads(self) -> List[Download]:
         return get_analysis_downloads(self.data["id"])
 

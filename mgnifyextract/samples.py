@@ -2,16 +2,14 @@ from __future__ import annotations
 from collections import UserDict
 import logging
 from typing import List
-import mgnifyextract
-from urllib.parse import urlencode
 from mgnifyextract.runs import Run
-from mgnifyextract.util import fetch_object, fetch_objects
+from mgnifyextract.util import fetch_objects
 
 
 logger = logging.getLogger(__name__)
 
 
-def get_sample_runs(accession: str, max_results: int=None) -> List[Run]:
+def get_sample_runs(accession: str, max_results: int = None) -> List[Run]:
     results = fetch_objects("samples", accession, "runs", max_results=max_results)
     return [Run(result) for result in results]
 
