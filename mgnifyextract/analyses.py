@@ -32,8 +32,8 @@ def read_fasta_files(accession: str):
 
 class Analysis(UserDict):
 
-    def get_downloads(self) -> List[Download]:
-        return get_analysis_downloads(self.data["id"])
+    def get_downloads(self, max_results: int = None) -> List[Download]:
+        return get_analysis_downloads(self.data["id"], max_results=max_results)
 
     def __str__(self):
         return f"Analysis https://www.ebi.ac.uk/metagenomics/analyses/{self.data['id']}"

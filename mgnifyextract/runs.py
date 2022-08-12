@@ -15,8 +15,8 @@ def get_run_analyses(accession: str, max_results: int = None) -> List[Analysis]:
 
 class Run(UserDict):
 
-    def get_analyses(self) -> List[Analysis]:
-        return get_run_analyses(self.data["id"])
+    def get_analyses(self, max_results: int = None) -> List[Analysis]:
+        return get_run_analyses(self.data["id"], max_results=max_results)
 
     def __str__(self):
         return f"Run https://www.ebi.ac.uk/metagenomics/runs/{self.data['id']}"

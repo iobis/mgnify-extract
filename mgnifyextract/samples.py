@@ -16,8 +16,8 @@ def get_sample_runs(accession: str, max_results: int = None) -> List[Run]:
 
 class Sample(UserDict):
 
-    def get_runs(self) -> List[Run]:
-        return get_sample_runs(self.data["id"])
+    def get_runs(self, max_results: int = None) -> List[Run]:
+        return get_sample_runs(self.data["id"], max_results=max_results)
 
     def __str__(self):
         return f"Sample https://www.ebi.ac.uk/metagenomics/samples/{self.data['id']}"

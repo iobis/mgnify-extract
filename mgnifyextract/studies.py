@@ -36,8 +36,8 @@ def get_superstudy_studies(accession: str, max_results: int = None) -> List[Stud
 
 class Study(UserDict):
 
-    def get_samples(self, **kwargs) -> List[Sample]:
-        return get_study_samples(self.data["id"], **kwargs)
+    def get_samples(self, max_results: int = None) -> List[Sample]:
+        return get_study_samples(self.data["id"], max_results=max_results)
 
     def __str__(self):
         return f"Study https://www.ebi.ac.uk/metagenomics/studies/{self.data['id']}"
@@ -48,8 +48,8 @@ class Study(UserDict):
 
 class SuperStudy(UserDict):
 
-    def get_studies(self, **kwargs) -> List[Sample]:
-        return get_superstudy_studies(self.data["id"], **kwargs)
+    def get_studies(self, max_results: int = None) -> List[Sample]:
+        return get_superstudy_studies(self.data["id"], max_results=max_results)
 
     def __str__(self):
         return f"Superstudy https://www.ebi.ac.uk/metagenomics/super-studies/{self.data['id']}"

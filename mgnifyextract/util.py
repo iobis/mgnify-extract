@@ -50,12 +50,14 @@ def paginate(url, max_results=None):
             data = res.json()
             results.extend(data["data"])
             next = data.get("links", {}).get("next")
-            if next is not None:
-                url = next
-            else:
+            if next is None:
                 break
-        if max_results is not None and len(results) >= max_results:
-            results = results[:max_results]
-            break
+            elif max_results is not None and len(results) >= max_results:
+                break
+            else:
+                url = next
+
+    if max_results is not None and len(results) >= max_results:
+        results = results[:max_results]
 
     return results
