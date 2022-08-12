@@ -1,10 +1,8 @@
 from collections import UserDict
 import logging
 from typing import List
-import mgnifyextract
-from urllib.parse import urlencode
 from mgnifyextract.downloads import Download
-from mgnifyextract.util import paginate
+from mgnifyextract.util import fetch_objects
 from pysam import FastaFile
 from urllib.request import urlopen
 from shutil import copyfileobj
@@ -16,13 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 def get_analysis_downloads(accession: str, max_results: int=None) -> List[Download]:
-    logger.debug(f"Getting downloads for analysis {accession}")
-    params = {
-        "format": "json"
-    }
-    results = []
-    url = mgnifyextract.API_URL + f"/analyses/{accession}/downloads?" + urlencode(params)
-    results = paginate(url, max_results)
+    results = fetch_objects("analyses", accession, "downloads", max_results=max_results)
     return [Download(result) for result in results]
 
 
@@ -44,7 +36,7 @@ class Analysis(UserDict):
         return get_analysis_downloads(self.data["id"])
 
     def __str__(self):
-        return f"Analysis {self.data['id']}"
+        return f"Analysis https://www.ebi.ac.uk/metagenomics/analyses/{self.data['id']}"
 
     def __repr__(self):
-        return f"<Analysis {self.data['id']}>"
+        return f"<Analysis https://www.ebi.ac.uk/metagenomics/analyses/{self.data['id']}>"

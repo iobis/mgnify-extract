@@ -1,11 +1,19 @@
+from typing import Dict
 import requests
 import logging
+from mgnifyextract import API_URL
+from urllib.parse import urlencode
 
 
 logger = logging.getLogger(__name__)
 
 
-def get_entity(url):
+def fetch_object(name: str, accession: str) -> Dict:
+    logger.debug(f"Fetching {name}/{accession}")
+    params = {
+        "format": "json"
+    }
+    url = f"{API_URL}/{name}/{accession}?" + urlencode(params)
     res = requests.get(url)
     logger.debug(f"Fetching {res.url}")
     if res.status_code != 200:
@@ -14,6 +22,18 @@ def get_entity(url):
         raise RuntimeError(message)
     else:
         return res.json()["data"]
+
+
+def fetch_objects(name: str, accession: str=None, child_name: str=None, filters: Dict=None, max_results: int=None):
+    params = {
+        "format": "json"
+    }
+    if filters is not None:
+        params = params | filters
+    endpoint_parts = [name, accession, child_name]
+    endpoint = "/".join([part for part in endpoint_parts if part is not None])
+    url = f"{API_URL}/{endpoint}?" + urlencode(params)
+    return paginate(url, max_results)
 
 
 def paginate(url, max_results=None):

@@ -23,7 +23,6 @@ logging.getLogger("urllib3").setLevel(logging.INFO)
 
 #studies = get_superstudy_studies("atlanteco")
 
-
 study_id = "MGYS00000462"
 
 study = get_study(study_id)

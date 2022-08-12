@@ -5,20 +5,14 @@ from typing import List
 import mgnifyextract
 from urllib.parse import urlencode
 from mgnifyextract.runs import Run
-from mgnifyextract.util import paginate
+from mgnifyextract.util import fetch_object, fetch_objects
 
 
 logger = logging.getLogger(__name__)
 
 
 def get_sample_runs(accession: str, max_results: int=None) -> List[Run]:
-    logger.debug(f"Getting runs for sample {accession}")
-    params = {
-        "format": "json"
-    }
-    results = []
-    url = mgnifyextract.API_URL + f"/samples/{accession}/runs?" + urlencode(params)
-    results = paginate(url, max_results)
+    results = fetch_objects("samples", accession, "runs", max_results=max_results)
     return [Run(result) for result in results]
 
 
@@ -28,7 +22,7 @@ class Sample(UserDict):
         return get_sample_runs(self.data["id"])
 
     def __str__(self):
-        return f"Sample {self.data['id']}"
+        return f"Sample https://www.ebi.ac.uk/metagenomics/samples/{self.data['id']}"
 
     def __repr__(self):
-        return f"<Sample {self.data['id']}>"
+        return f"<Sample https://www.ebi.ac.uk/metagenomics/samples/{self.data['id']}>"
