@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 import requests
 import logging
 from mgnifyextract import API_URL
@@ -24,7 +24,7 @@ def fetch_object(name: str, accession: str) -> Dict:
         return res.json()["data"]
 
 
-def fetch_objects(name: str, accession: str = None, child_name: str = None, filters: Dict = None, max_results: int = None):
+def fetch_objects(name: str, accession: str = None, child_name: str = None, filters: Dict = None, max_results: int = None) -> List[Dict]:
     params = {
         "format": "json"
     }
@@ -36,7 +36,7 @@ def fetch_objects(name: str, accession: str = None, child_name: str = None, filt
     return paginate(url, max_results)
 
 
-def paginate(url, max_results=None):
+def paginate(url: str, max_results: int = None) -> List[Dict]:
     results = []
 
     while True:
