@@ -18,6 +18,7 @@ class Analysis(UserDict):
     def get_downloads(self, max_results: int = None) -> List[Download]:
         return get_analysis_downloads(self.data["id"], max_results=max_results)
 
+    # TODO: rewrite
     def get_fasta_files(self, max_results: int = None) -> List[Download]:
         results = [download for download in self.get_downloads() if download.file_format() == "FASTA"]
         if max_results is not None and len(results) >= max_results:

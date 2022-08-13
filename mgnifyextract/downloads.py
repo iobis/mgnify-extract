@@ -28,32 +28,35 @@ class Download(UserDict):
     def file_format(self) -> str:
         return self.data["attributes"]["file-format"]["name"]
 
+    def group_type(self) -> str:
+        return self.data["attributes"]["group-type"]
+
     def url(self) -> str:
         return self.data["links"]["self"]
 
     def __str__(self):
-        return f"Download {self.data['links']['self']}"
+        return f"{self.__class__.__name__} {self.file_format()} {self.group_type()} {self.data['links']['self']}"
 
     def __repr__(self):
-        return f"<Download {self.data['links']['self']}>"
+        return f"<{self.__class__.__name__} {self.file_format()} {self.group_type()} {self.data['links']['self']}>"
 
 
 class TsvDownload(Download):
 
     def __repr__(self):
-        return f"<TsvDownload {self.data['links']['self']}>"
+        return f"<{self.__class__.__name__} {self.group_type()} {self.data['links']['self']}>"
 
 
 class Hdf5BiomDownload(Download):
 
     def __repr__(self):
-        return f"<Hdf5BiomDownload {self.data['links']['self']}>"
+        return f"<{self.__class__.__name__} {self.group_type()} {self.data['links']['self']}>"
 
 
 class JsonBiomDownload(Download):
 
     def __repr__(self):
-        return f"<JsonBiomDownload {self.data['links']['self']}>"
+        return f"<{self.__class__.__name__} {self.group_type()} {self.data['links']['self']}>"
 
 
 class FastaDownload(Download):
@@ -73,4 +76,4 @@ class FastaDownload(Download):
             raise RuntimeError(message)
 
     def __repr__(self):
-        return f"<FastaDownload {self.data['links']['self']}>"
+        return f"<{self.__class__.__name__} {self.group_type()} {self.data['links']['self']}>"
