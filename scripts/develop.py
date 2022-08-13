@@ -1,9 +1,4 @@
-from turtle import down
-from mgnifyextract import analyses
 from mgnifyextract.studies import find_studies, get_study_samples, get_superstudy_studies, get_study
-from mgnifyextract.samples import get_sample_runs
-from mgnifyextract.runs import get_run_analyses
-from mgnifyextract.analyses import get_analysis_downloads
 import logging
 import json
 
@@ -31,14 +26,20 @@ print(study)
 samples = study.get_samples(max_results=2)
 print(samples)
 
-runs = samples[0].get_runs()
+runs = samples[0].get_runs(max_results=1)
 print(runs)
 
-analyses = runs[0].get_analyses()
+analyses = runs[0].get_analyses(max_results=1)
 print(analyses)
 
-downloads = analyses[0].get_downloads()
-print(downloads)
+fasta_files = analyses[0].get_fasta_files(max_results=1)
+print(fasta_files)
+
+fasta = fasta_files[0].read()
+print(fasta.get_reference_length)
+print(fasta.references[0])
+print(fasta.fetch(fasta.references[0]))
+
 
 #print(json.dumps(downloads, indent=2))
 #analyses.read_fasta_files("MGYA00199483")

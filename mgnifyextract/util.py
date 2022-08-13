@@ -3,6 +3,7 @@ import requests
 import logging
 from mgnifyextract import API_URL
 from urllib.parse import urlencode
+import shutil
 
 
 logger = logging.getLogger(__name__)
@@ -61,3 +62,10 @@ def paginate(url: str, max_results: int = None) -> List[Dict]:
         results = results[:max_results]
 
     return results
+
+
+def download_file(url: str, path: str) -> None:
+    with requests.get(url, stream=True) as r:
+        r.raw.decode_content = True
+        with open(path, "wb") as f:
+            shutil.copyfileobj(r.raw, f)
