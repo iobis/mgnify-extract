@@ -32,6 +32,9 @@ print(runs)
 analyses = runs[0].get_analyses(max_results=1)
 print(analyses)
 
+downloads = analyses[0].get_downloads()
+print(downloads)
+
 fasta_files = analyses[0].get_fasta_files(max_results=1)
 print(fasta_files)
 

@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 def get_analysis_downloads(accession: str, max_results: int = None) -> List[Download]:
     results = fetch_objects("analyses", accession, "downloads", max_results=max_results)
-    return [Download(result) for result in results]
+    return [Download.create(result) for result in results]
 
 
 class Analysis(UserDict):

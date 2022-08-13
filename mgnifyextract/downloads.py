@@ -12,6 +12,52 @@ logger = logging.getLogger(__name__)
 
 class Download(UserDict):
 
+    @staticmethod
+    def create(data):
+        if data["attributes"]["file-format"]["name"] == "FASTA":
+            return FastaDownload(data)
+        elif data["attributes"]["file-format"]["name"] == "TSV":
+            return TsvDownload(data)
+        elif data["attributes"]["file-format"]["name"] == "HDF5 Biom":
+            return Hdf5BiomDownload(data)
+        elif data["attributes"]["file-format"]["name"] == "JSON Biom":
+            return JsonBiomDownload(data)
+        else:
+            return Download(data)
+
+    def file_format(self) -> str:
+        return self.data["attributes"]["file-format"]["name"]
+
+    def url(self) -> str:
+        return self.data["links"]["self"]
+
+    def __str__(self):
+        return f"Download {self.data['links']['self']}"
+
+    def __repr__(self):
+        return f"<Download {self.data['links']['self']}>"
+
+
+class TsvDownload(Download):
+
+    def __repr__(self):
+        return f"<TsvDownload {self.data['links']['self']}>"
+
+
+class Hdf5BiomDownload(Download):
+
+    def __repr__(self):
+        return f"<Hdf5BiomDownload {self.data['links']['self']}>"
+
+
+class JsonBiomDownload(Download):
+
+    def __repr__(self):
+        return f"<JsonBiomDownload {self.data['links']['self']}>"
+
+
+class FastaDownload(Download):
+
     def read(self) -> FastaFile:
         format = self.file_format()
         if (format == "FASTA"):
@@ -26,14 +72,5 @@ class Download(UserDict):
             logger.error(message)
             raise RuntimeError(message)
 
-    def file_format(self) -> str:
-        return self.data["attributes"]["file-format"]["name"]
-
-    def url(self) -> str:
-        return self.data["links"]["self"]
-
-    def __str__(self):
-        return f"Download {self.data['links']['self']}"
-
     def __repr__(self):
-        return f"<Download {self.data['links']['self']}>"
+        return f"<FastaDownload {self.data['links']['self']}>"
