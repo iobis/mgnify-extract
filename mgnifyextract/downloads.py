@@ -5,6 +5,7 @@ from shutil import copyfileobj
 from tempfile import NamedTemporaryFile
 import gzip
 from mgnifyextract.util import download_file
+import pandas as pd
 
 
 logger = logging.getLogger(__name__)
@@ -16,6 +17,8 @@ class Download(UserDict):
     def create(data):
         if data["attributes"]["file-format"]["name"] == "FASTA":
             return FastaDownload(data)
+        elif ".mseq" in data["attributes"]["alias"]:
+            return MseqDownload(data)
         elif data["attributes"]["file-format"]["name"] == "TSV":
             return TsvDownload(data)
         elif data["attributes"]["file-format"]["name"] == "HDF5 Biom":
@@ -24,6 +27,15 @@ class Download(UserDict):
             return JsonBiomDownload(data)
         else:
             return Download(data)
+
+    def __init__(self, data):
+        UserDict.__init__(self, data)
+        if "_SSU" in self.data["id"]:
+            self.marker = "SSU"
+        elif "_LSU" in self.data["id"]:
+            self.marker = "LSU"
+        else:
+            self.marker = None
 
     def file_format(self) -> str:
         return self.data["attributes"]["file-format"]["name"]
@@ -42,6 +54,20 @@ class Download(UserDict):
 
 
 class TsvDownload(Download):
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__} {self.group_type()} {self.data['links']['self']}>"
+
+
+class MseqDownload(Download):
+
+    def read(self) -> pd.DataFrame:
+        with NamedTemporaryFile(suffix=".gz") as gz:
+            download_file(self.url(), gz.name)
+            with gzip.open(gz.name, "rb") as f_in, NamedTemporaryFile(suffix=".mseq") as f_out:
+                copyfileobj(f_in, f_out)
+                df = pd.read_csv(f_out.name, sep="\t", comment="#")
+                return df
 
     def __repr__(self):
         return f"<{self.__class__.__name__} {self.group_type()} {self.data['links']['self']}>"

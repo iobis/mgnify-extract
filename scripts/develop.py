@@ -1,4 +1,6 @@
 from mgnifyextract.studies import find_studies, get_study_samples, get_superstudy_studies, get_study
+from mgnifyextract.analyses import get_analysis
+from mgnifyextract.downloads import FastaDownload, MseqDownload
 import logging
 import json
 
@@ -18,25 +20,33 @@ logging.getLogger("urllib3").setLevel(logging.INFO)
 
 #studies = get_superstudy_studies("atlanteco")
 
-study_id = "MGYS00000462"
+######### OSD study
 
-study = get_study(study_id)
-print(study)
+#study_id = "MGYS00000462"
+#study = get_study(study_id)
+#print(study)
+#samples = study.get_samples(max_results=2)
+#print(samples)
+#runs = samples[0].get_runs(max_results=1)
+#print(runs)
+#analyses = runs[0].get_analyses(max_results=1)
+#print(analyses)
+#downloads = analyses[0].get_downloads()
+#print(downloads)
 
-samples = study.get_samples(max_results=2)
-print(samples)
+######### Tara analysis
 
-runs = samples[0].get_runs(max_results=1)
-print(runs)
+analysis = get_analysis("MGYA00166828")
+downloads = analysis.get_downloads()
+mseq_files = [download for download in downloads if isinstance(download, MseqDownload)]
+df = mseq_files[0].read()
 
-analyses = runs[0].get_analyses(max_results=1)
-print(analyses)
 
-downloads = analyses[0].get_downloads()
-print(downloads)
 
-fasta_files = analyses[0].get_fasta_files(max_results=1)
-print(fasta_files)
+
+#fasta_files = analyses[0].get_fasta_files(max_results=1)
+#print(fasta_files)
+
 
 fasta = fasta_files[0].read()
 print(fasta.get_reference_length)
