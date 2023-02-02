@@ -6,7 +6,7 @@ from tempfile import NamedTemporaryFile
 import gzip
 from mgnifyextract.util import download_file
 import pandas as pd
-from Bio.SeqIO.FastaIO import SimpleFastaParser 
+from Bio.SeqIO.FastaIO import SimpleFastaParser
 
 
 logger = logging.getLogger(__name__)
