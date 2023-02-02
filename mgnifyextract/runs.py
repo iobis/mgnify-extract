@@ -9,6 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 def get_run_analyses(accession: str, max_results: int = None) -> List[Analysis]:
+    """Get analyses for run by accession."""
     results = fetch_objects("runs", accession, "analyses", max_results=max_results)
     return [Analysis(result) for result in results]
 
@@ -16,6 +17,7 @@ def get_run_analyses(accession: str, max_results: int = None) -> List[Analysis]:
 class Run(UserDict):
 
     def get_analyses(self, max_results: int = None) -> List[Analysis]:
+        """Get analyses for run."""
         return get_run_analyses(self.data["id"], max_results=max_results)
 
     def __str__(self):

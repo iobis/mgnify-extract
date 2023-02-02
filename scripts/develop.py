@@ -1,6 +1,7 @@
+from mgnifyextract.dwc import study_to_dwc
 from mgnifyextract.studies import find_studies, get_study_samples, get_superstudy_studies, get_study
 from mgnifyextract.analyses import get_analysis
-from mgnifyextract.downloads import FastaDownload, MseqDownload
+from mgnifyextract.downloads import FastaDownload, MseqDownload, TsvDownload
 import logging
 import json
 
@@ -21,7 +22,6 @@ logging.getLogger("urllib3").setLevel(logging.INFO)
 #studies = get_superstudy_studies("atlanteco")
 
 ######### OSD study
-
 #study_id = "MGYS00000462"
 #study = get_study(study_id)
 #print(study)
@@ -35,24 +35,10 @@ logging.getLogger("urllib3").setLevel(logging.INFO)
 #print(downloads)
 
 ######### Tara analysis
+#analysis = get_analysis("MGYA00166828")
 
-analysis = get_analysis("MGYA00166828")
-downloads = analysis.get_downloads()
-mseq_files = [download for download in downloads if isinstance(download, MseqDownload)]
-df = mseq_files[0].read()
+#########
 
-
-
-
-#fasta_files = analyses[0].get_fasta_files(max_results=1)
-#print(fasta_files)
-
-
-fasta = fasta_files[0].read()
-print(fasta.get_reference_length)
-print(fasta.references[0])
-print(fasta.fetch(fasta.references[0]))
-
-
-#print(json.dumps(downloads, indent=2))
-#analyses.read_fasta_files("MGYA00199483")
+study = get_superstudy_studies("atlanteco")[0]
+occ, dna = study_to_dwc(study, max_samples=None)
+pass
