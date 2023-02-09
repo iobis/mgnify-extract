@@ -3,6 +3,10 @@ from mgnifyextract.downloads import Download, FastaDownload, MseqDownload
 from mgnifyextract.studies import Study
 import pandas as pd
 from mgnifyextract.util import clean_taxonomy_string
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 def downloads_to_sequence_table(downloads: List[Download], marker: str) -> pd.DataFrame:
@@ -27,7 +31,9 @@ def study_to_dwc(study: Study, max_samples: int = None) -> tuple[pd.DataFrame, p
     dna_frames = []
 
     samples = study.get_samples(max_results=max_samples)
-    for sample in samples:
+    for i, sample in enumerate(samples):
+
+        logger.info(f"Processing sample {i + 1} of {len(samples)}")
 
         # event fields
 
