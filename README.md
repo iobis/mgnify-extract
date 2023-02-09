@@ -45,6 +45,7 @@ from mgnifyextract.dwc import study_to_dwc
 
 study = get_superstudy_studies("atlanteco")[0]
 # <Study https://www.ebi.ac.uk/metagenomics/studies/MGYS00005780>
+
 occ, dna = study_to_dwc(study)
 ```
 
