@@ -1,6 +1,6 @@
 # mgnify-extract
 
-This library extracts Darwin Core datasets from MGnify.
+This library extracts Darwin Core datasets from MGnify. API documentation at https://iobis.github.io/mgnify-extract.
 
 ## Usage
 

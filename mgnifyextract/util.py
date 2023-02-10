@@ -1,13 +1,13 @@
 from typing import Dict, List
 import requests
 import logging
-from mgnifyextract import API_URL
 from urllib.parse import urlencode
 import shutil
 import re
 
 
 logger = logging.getLogger(__name__)
+API_URL = "https://www.ebi.ac.uk/metagenomics/api/v1"
 
 
 def fetch_object(name: str, accession: str) -> Dict:
