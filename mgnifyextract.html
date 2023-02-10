@@ -21,6 +21,16 @@
             <input type="search" placeholder="Search..." role="searchbox" aria-label="search"
                    pattern=".+" required>
 
+        <h2>Contents</h2>
+        <ul>
+  <li><a href="#mgnify-extract">mgnify-extract</a>
+  <ul>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#run-scripts">Run scripts</a></li>
+    <li><a href="#run-module">Run module</a></li>
+  </ul></li>
+</ul>
+
 
         <h2>Submodules</h2>
         <ul>
@@ -32,10 +42,6 @@
                 <li><a href="mgnifyextract/studies.html">studies</a></li>
                 <li><a href="mgnifyextract/util.html">util</a></li>
         </ul>
-
-        <h2>API Documentation</h2>
-            <ul class="memberlist">
-    </ul>
 
 
 
@@ -51,12 +57,78 @@
                     <h1 class="modulename">
 mgnifyextract    </h1>
 
-                
+                        <div class="docstring"><h1 id="mgnify-extract">mgnify-extract</h1>
+
+<p>This library extracts Darwin Core datasets from MGnify. API documentation at <a href="https://iobis.github.io/mgnify-extract">https://iobis.github.io/mgnify-extract</a>.</p>
+
+<h2 id="usage">Usage</h2>
+
+<p>Find studies:</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="kn">from</span> <span class="nn"><a href="mgnifyextract/studies.html">mgnifyextract.studies</a></span> <span class="kn">import</span> <span class="n">find_studies</span>
+
+<span class="n">filters</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;lineage&quot;</span><span class="p">:</span> <span class="s2">&quot;root:Environmental:Aquatic:Marine&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;search&quot;</span><span class="p">:</span> <span class="s2">&quot;Tara&quot;</span>
+<span class="p">}</span>
+<span class="n">studies</span> <span class="o">=</span> <span class="n">find_studies</span><span class="p">(</span><span class="n">filters</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p>Fetching samples, runs, analyses, and downloads:</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="kn">from</span> <span class="nn"><a href="mgnifyextract/studies.html">mgnifyextract.studies</a></span> <span class="kn">import</span> <span class="n">get_study</span>
+
+<span class="n">study</span> <span class="o">=</span> <span class="n">get_study</span><span class="p">(</span><span class="s2">&quot;MGYS00000462&quot;</span><span class="p">)</span>
+<span class="c1"># &lt;Study https://www.ebi.ac.uk/metagenomics/studies/MGYS00000462&gt;</span>
+
+<span class="n">samples</span> <span class="o">=</span> <span class="n">study</span><span class="o">.</span><span class="n">get_samples</span><span class="p">()</span>
+<span class="c1"># [&lt;Sample https://www.ebi.ac.uk/metagenomics/samples/ERS667567&gt;, &lt;Sample https://www.ebi.ac.uk/metagenomics/samples/ERS667569&gt;, &lt;Sample https://www.ebi.ac.uk/metagenomics/samples/ERS667570&gt;, ...]</span>
+
+<span class="n">runs</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_runs</span><span class="p">()</span>
+<span class="c1"># [&lt;Run https://www.ebi.ac.uk/metagenomics/runs/ERR867642&gt;, &lt;Run https://www.ebi.ac.uk/metagenomics/runs/ERR867641&gt;, &lt;Run https://www.ebi.ac.uk/metagenomics/runs/ERR770958&gt;]</span>
+
+<span class="n">analyses</span> <span class="o">=</span> <span class="n">runs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_analyses</span><span class="p">()</span>
+<span class="c1"># [&lt;Analysis https://www.ebi.ac.uk/metagenomics/analyses/MGYA00593805&gt;, &lt;Analysis https://www.ebi.ac.uk/metagenomics/analyses/MGYA00135741&gt;]</span>
+
+<span class="n">downloads</span> <span class="o">=</span> <span class="n">analyses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_downloads</span><span class="p">()</span>
+<span class="c1"># [&lt;FastaDownload Sequence data https://www.ebi.ac.uk/metagenomics/api/v1/analyses/MGYA00593805/file/ERR867642_MERGED_FASTQ.fasta.gz?format=json&gt;, &lt;FastaDownload Taxonomic analysis SSU rRNA https://www.ebi.ac.uk/metagenomics/api/v1/analyses/MGYA00593805/file/ERR867642_MERGED_FASTQ_SSU.fasta.gz?format=json&gt;, &lt;MseqDownload Taxonomic analysis SSU rRNA https://www.ebi.ac.uk/metagenomics/api/v1/analyses/MGYA00593805/file/ERR867642_MERGED_FASTQ_SSU_MAPSeq.mseq.gz?format=json&gt;, &lt;TsvDownload Taxonomic analysis SSU rRNA https://www.ebi.ac.uk/metagenomics/api/v1/analyses/MGYA00593805/file/ERR867642_MERGED_FASTQ_SSU_OTU.tsv?format=json&gt;, &lt;Hdf5BiomDownload Taxonomic analysis SSU rRNA https://www.ebi.ac.uk/metagenomics/api/v1/analyses/MGYA00593805/file/ERR867642_MERGED_FASTQ_SSU_OTU_TABLE_HDF5.biom?format=json&gt;, &lt;JsonBiomDownload Taxonomic analysis SSU rRNA https://www.ebi.ac.uk/metagenomics/api/v1/analyses/MGYA00593805/file/ERR867642_MERGED_FASTQ_SSU_OTU_TABLE_JSON.biom?format=json&gt;]</span>
+</code></pre>
+</div>
+
+<p>Generating Darwin Core tables:</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="kn">from</span> <span class="nn"><a href="mgnifyextract/studies.html">mgnifyextract.studies</a></span> <span class="kn">import</span> <span class="n">get_superstudy_studies</span>
+<span class="kn">from</span> <span class="nn"><a href="mgnifyextract/dwc.html">mgnifyextract.dwc</a></span> <span class="kn">import</span> <span class="n">study_to_dwc</span>
+
+<span class="n">study</span> <span class="o">=</span> <span class="n">get_superstudy_studies</span><span class="p">(</span><span class="s2">&quot;atlanteco&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1"># &lt;Study https://www.ebi.ac.uk/metagenomics/studies/MGYS00005780&gt;</span>
+
+<span class="n">occ</span><span class="p">,</span> <span class="n">dna</span> <span class="o">=</span> <span class="n">study_to_dwc</span><span class="p">(</span><span class="n">study</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<h2 id="run-scripts">Run scripts</h2>
+
+<pre><code>PYTHONPATH=. python scripts/develop.py
+</code></pre>
+
+<h2 id="run-module">Run module</h2>
+
+<pre><code>python -m mgnifyextract
+</code></pre>
+</div>
+
                         <input id="mod-mgnifyextract-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 
                         <label class="view-source-button" for="mod-mgnifyextract-view-source"><span>View Source</span></label>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">1</span></a><span class="n">API_URL</span> <span class="o">=</span> <span class="s2">&quot;https://www.ebi.ac.uk/metagenomics/api/v1&quot;</span>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">1</span></a><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-2"><a href="#L-2"><span class="linenos">2</span></a><span class="sd">.. include:: ../README.md</span>
+</span><span id="L-3"><a href="#L-3"><span class="linenos">3</span></a><span class="sd">&quot;&quot;&quot;</span>
 </span></pre></div>
 
 
