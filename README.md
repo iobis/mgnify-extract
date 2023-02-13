@@ -54,9 +54,3 @@ occ, dna = study_to_dwc(study)
 ```
 PYTHONPATH=. python scripts/develop.py
 ```
-
-## Run module
-
-```
-python -m mgnifyextract
-```
