@@ -30,4 +30,4 @@ class Analysis(UserDict):
         return f"Analysis https://www.ebi.ac.uk/metagenomics/analyses/{self.data['id']}"
 
     def __repr__(self):
-        return f"<Analysis https://www.ebi.ac.uk/metagenomics/analyses/{self.data['id']}>"
+        return f"<Analysis https://www.ebi.ac.uk/metagenomics/analyses/{self.data['id']} >"

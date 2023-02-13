@@ -54,7 +54,7 @@ class Download(UserDict):
         return f"{self.__class__.__name__} {self.file_format()} {self.group_type()} {self.data['links']['self']}"
 
     def __repr__(self):
-        return f"<{self.__class__.__name__} {self.file_format()} {self.group_type()} {self.data['links']['self']}>"
+        return f"<{self.__class__.__name__} {self.file_format()} {self.group_type()} {self.data['links']['self']} >"
 
 
 class TsvDownload(Download):
@@ -67,7 +67,7 @@ class TsvDownload(Download):
             return df
 
     def __repr__(self):
-        return f"<{self.__class__.__name__} {self.group_type()} {self.data['links']['self']}>"
+        return f"<{self.__class__.__name__} {self.group_type()} {self.data['links']['self']} >"
 
 
 class MseqDownload(Download):
@@ -82,19 +82,19 @@ class MseqDownload(Download):
                 return df
 
     def __repr__(self):
-        return f"<{self.__class__.__name__} {self.group_type()} {self.data['links']['self']}>"
+        return f"<{self.__class__.__name__} {self.group_type()} {self.data['links']['self']} >"
 
 
 class Hdf5BiomDownload(Download):
 
     def __repr__(self):
-        return f"<{self.__class__.__name__} {self.group_type()} {self.data['links']['self']}>"
+        return f"<{self.__class__.__name__} {self.group_type()} {self.data['links']['self']} >"
 
 
 class JsonBiomDownload(Download):
 
     def __repr__(self):
-        return f"<{self.__class__.__name__} {self.group_type()} {self.data['links']['self']}>"
+        return f"<{self.__class__.__name__} {self.group_type()} {self.data['links']['self']} >"
 
 
 class FastaDownload(Download):
@@ -125,4 +125,4 @@ class FastaDownload(Download):
             raise RuntimeError(message)
 
     def __repr__(self):
-        return f"<{self.__class__.__name__} {self.group_type()} {self.data['links']['self']}>"
+        return f"<{self.__class__.__name__} {self.group_type()} {self.data['links']['self']} >"
