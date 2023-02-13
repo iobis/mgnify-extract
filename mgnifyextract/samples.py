@@ -25,4 +25,4 @@ class Sample(UserDict):
         return f"Sample https://www.ebi.ac.uk/metagenomics/samples/{self.data['id']}"
 
     def __repr__(self):
-        return f"<Sample https://www.ebi.ac.uk/metagenomics/samples/{self.data['id']}>"
+        return f"<Sample https://www.ebi.ac.uk/metagenomics/samples/{self.data['id']} >"

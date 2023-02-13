@@ -49,7 +49,7 @@ class Study(UserDict):
         return f"Study https://www.ebi.ac.uk/metagenomics/studies/{self.data['id']}"
 
     def __repr__(self):
-        return f"<Study https://www.ebi.ac.uk/metagenomics/studies/{self.data['id']}>"
+        return f"<Study https://www.ebi.ac.uk/metagenomics/studies/{self.data['id']} >"
 
 
 class SuperStudy(UserDict):
@@ -62,4 +62,4 @@ class SuperStudy(UserDict):
         return f"Superstudy https://www.ebi.ac.uk/metagenomics/super-studies/{self.data['id']}"
 
     def __repr__(self):
-        return f"<Superstudy https://www.ebi.ac.uk/metagenomics/super-studies/{self.data['id']}>"
+        return f"<Superstudy https://www.ebi.ac.uk/metagenomics/super-studies/{self.data['id']} >"

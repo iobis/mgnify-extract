@@ -24,4 +24,4 @@ class Run(UserDict):
         return f"Run https://www.ebi.ac.uk/metagenomics/runs/{self.data['id']}"
 
     def __repr__(self):
-        return f"<Run https://www.ebi.ac.uk/metagenomics/runs/{self.data['id']}>"
+        return f"<Run https://www.ebi.ac.uk/metagenomics/runs/{self.data['id']} >"
