@@ -1,4 +1,3 @@
-from typing import List
 from mgnifyextract.downloads import Download, FastaDownload, MseqDownload
 from mgnifyextract.studies import Study
 import pandas as pd
@@ -9,7 +8,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def downloads_to_sequence_table(downloads: List[Download], marker: str) -> pd.DataFrame:
+def downloads_to_sequence_table(downloads: list[Download], marker: str) -> pd.DataFrame:
     fasta_files = [download for download in downloads if isinstance(download, FastaDownload) and download.marker == marker]
     mseq_files = [download for download in downloads if isinstance(download, MseqDownload) and download.marker == marker]
     assert len(fasta_files) == 1 and len(mseq_files) == 1
@@ -25,7 +24,7 @@ def downloads_to_sequence_table(downloads: List[Download], marker: str) -> pd.Da
     return df
 
 
-def study_to_dwc(study: Study, max_samples: int = None) -> tuple[pd.DataFrame, pd.DataFrame]:
+def study_to_dwc(study: Study, max_samples: int = None, markers: list[str] = ["LSU", "SSU"]) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Generate Darwin Core tables for study."""
     occ_frames = []
     dna_frames = []
@@ -63,9 +62,10 @@ def study_to_dwc(study: Study, max_samples: int = None) -> tuple[pd.DataFrame, p
             for analysis in analyses:
 
                 downloads = analysis.get_downloads()
-                lsu = downloads_to_sequence_table(downloads, "LSU")
+                frames = [downloads_to_sequence_table(downloads, marker) for marker in markers]
+                sequences = pd.concat(frames)
 
-                dna = lsu.filter(["SILVA", "sequence", "dbhit"]) \
+                dna = sequences.filter(["SILVA", "sequence", "dbhit"]) \
                     .rename({"SILVA": "scientificName", "sequence": "DNA_sequence"}, axis=1)
                 dna["scientificName"] = dna["scientificName"].apply(clean_taxonomy_string)
                 dna.dropna(inplace=True)
