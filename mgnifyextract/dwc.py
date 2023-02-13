@@ -71,8 +71,11 @@ def study_to_dwc(study: Study, max_samples: int = None, markers: list[str] = ["L
                 dna.dropna(inplace=True)
                 dna["temp"] = dna.groupby(["dbhit"])["scientificName"].transform(lambda x: pd.factorize(x)[0]).astype(str)
                 dna["occurrenceID"] = dna.apply(lambda x: "%s_%s_%s" % (event_fields["eventID"], x["dbhit"], x["temp"]), axis=1)
+
                 occ = dna.groupby(["occurrenceID", "scientificName"]).size().reset_index(name="organismQuantity")
+
                 dna = dna.filter(["occurrenceID", "DNA_sequence"])
+                dna = dna.groupby(["occurrenceID"]).nth(0).reset_index()
                 dna["ref_db"] = "SILVA"
 
                 for key, value in event_fields.items():

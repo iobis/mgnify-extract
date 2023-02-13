@@ -40,5 +40,5 @@ logging.getLogger("urllib3").setLevel(logging.INFO)
 #########
 
 study = get_superstudy_studies("atlanteco")[0]
-occ, dna = study_to_dwc(study, max_samples=None)
+occ, dna = study_to_dwc(study, max_samples=1, markers=["LSU"])
 pass
