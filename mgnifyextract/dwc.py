@@ -2,6 +2,7 @@ from mgnifyextract.downloads import Download, FastaDownload, MseqDownload
 from mgnifyextract.studies import Study
 import pandas as pd
 from mgnifyextract.util import clean_taxonomy_string
+from mgnifyextract.silva import get_silva_otus
 import logging
 
 
@@ -73,6 +74,9 @@ def study_to_dwc(study: Study, max_samples: int = None, markers: list[str] = ["L
                 dna["occurrenceID"] = dna.apply(lambda x: "%s_%s_%s" % (event_fields["eventID"], x["dbhit"], x["temp"]), axis=1)
 
                 occ = dna.groupby(["occurrenceID", "scientificName"]).size().reset_index(name="organismQuantity")
+                otus = get_silva_otus()
+                otus.rename(columns={"taxonomy": "scientificName"}, inplace=True)
+                occ = occ.merge(otus, how="left", on="scientificName")
 
                 dna = dna.filter(["occurrenceID", "DNA_sequence"])
                 dna = dna.groupby(["occurrenceID"]).nth(0).reset_index()
