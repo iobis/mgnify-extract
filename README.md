@@ -48,9 +48,3 @@ study = get_superstudy_studies("atlanteco")[0]
 
 occ, dna = study_to_dwc(study)
 ```
-
-## Run scripts
-
-```
-PYTHONPATH=. python scripts/develop.py
-```

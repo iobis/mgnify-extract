@@ -25,6 +25,26 @@ def downloads_to_sequence_table(downloads: list[Download], marker: str) -> pd.Da
     return df
 
 
+def translate_rank(input):
+    ranks = {
+        "sk": "superkingdom",
+        "k": "kingdom",
+        "p": "phylum",
+        "c": "class",
+        "o": "order",
+        "f": "family",
+        "g": "genus",
+        "s": "species",
+        "t": "strain"
+    }
+    return ranks[input]
+
+
+def split_taxonomy_column(taxonomy):
+    items = [part.split("__") for part in taxonomy.split(";")]
+    return dict([(translate_rank(item[0]), item[1]) for item in items])
+
+
 def study_to_dwc(study: Study, max_samples: int = None, markers: list[str] = ["LSU", "SSU"]) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Generate Darwin Core tables for study."""
     occ_frames = []
@@ -67,16 +87,16 @@ def study_to_dwc(study: Study, max_samples: int = None, markers: list[str] = ["L
                 sequences = pd.concat(frames)
 
                 dna = sequences.filter(["SILVA", "sequence", "dbhit"]) \
-                    .rename({"SILVA": "scientificName", "sequence": "DNA_sequence"}, axis=1)
-                dna["scientificName"] = dna["scientificName"].apply(clean_taxonomy_string)
+                    .rename({"SILVA": "taxonomy", "sequence": "DNA_sequence"}, axis=1)
+                dna["taxonomy"] = dna["taxonomy"].apply(clean_taxonomy_string)
                 dna.dropna(inplace=True)
-                dna["temp"] = dna.groupby(["dbhit"])["scientificName"].transform(lambda x: pd.factorize(x)[0]).astype(str)
+                dna["temp"] = dna.groupby(["dbhit"])["taxonomy"].transform(lambda x: pd.factorize(x)[0]).astype(str)
                 dna["occurrenceID"] = dna.apply(lambda x: "%s_%s_%s" % (event_fields["eventID"], x["dbhit"], x["temp"]), axis=1)
 
-                occ = dna.groupby(["occurrenceID", "scientificName"]).size().reset_index(name="organismQuantity")
+                occ = dna.groupby(["occurrenceID", "taxonomy"]).size().reset_index(name="organismQuantity")
                 otus = get_silva_otus()
-                otus.rename(columns={"taxonomy": "scientificName"}, inplace=True)
-                occ = occ.merge(otus, how="left", on="scientificName")
+                occ = occ.merge(otus, how="left", on="taxonomy")
+                occ = occ.join(pd.DataFrame(occ["taxonomy"].apply(split_taxonomy_column).values.tolist()))
 
                 dna = dna.filter(["occurrenceID", "DNA_sequence"])
                 dna = dna.groupby(["occurrenceID"]).nth(0).reset_index()
