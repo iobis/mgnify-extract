@@ -42,7 +42,11 @@ def translate_rank(input):
 
 def split_taxonomy_column(taxonomy):
     items = [part.split("__") for part in taxonomy.split(";")]
-    return dict([(translate_rank(item[0]), item[1]) for item in items])
+    ranks = [(translate_rank(item[0]), item[1]) for item in items]
+    if len(ranks) > 0:
+        scientificname = ("scientificName", ranks[-1][1])
+        ranks.append(scientificname)
+    return dict(ranks)
 
 
 def study_to_dwc(study: Study, max_samples: int = None, markers: list[str] = ["LSU", "SSU"]) -> tuple[pd.DataFrame, pd.DataFrame]:
