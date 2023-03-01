@@ -4,6 +4,7 @@ import pandas as pd
 from mgnifyextract.util import clean_taxonomy_string
 from mgnifyextract.silva import get_silva_otus
 import logging
+import pyworms
 
 
 logger = logging.getLogger(__name__)
@@ -49,7 +50,15 @@ def split_taxonomy_column(taxonomy):
     return dict(ranks)
 
 
-def study_to_dwc(study: Study, max_samples: int = None, markers: list[str] = ["LSU", "SSU"]) -> tuple[pd.DataFrame, pd.DataFrame]:
+def add_lsids(occ):
+    taxonomy_ids = occ["taxonomy_id"].unique()
+    logger.info(f"Fetching {len(taxonomy_ids)} records from WoRMS")
+    matches = dict([(x, pyworms.aphiaRecordByExternalID(x, "ncbi")) for x in taxonomy_ids])
+    lsid_col = [matches[x]["lsid"] if matches[x] is not None else None if x in matches else None for x in occ["taxonomy_id"]]
+    occ["scientificNameID"] = lsid_col
+
+
+def study_to_dwc(study: Study, max_samples: int = None, markers: list[str] = ["LSU", "SSU"], add_lsid: bool = False) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Generate Darwin Core tables for study."""
     occ_frames = []
     dna_frames = []
@@ -114,5 +123,8 @@ def study_to_dwc(study: Study, max_samples: int = None, markers: list[str] = ["L
 
     occ = pd.concat(occ_frames)
     dna = pd.concat(dna_frames)
+
+    if add_lsid:
+        add_lsids(occ)
 
     return occ, dna
