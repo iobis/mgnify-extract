@@ -2,6 +2,12 @@
 
 This library extracts Darwin Core datasets from MGnify. API documentation at https://iobis.github.io/mgnify-extract.
 
+## Installation
+
+```
+pip install mgnify-extract
+```
+
 ## Usage
 
 Find studies:

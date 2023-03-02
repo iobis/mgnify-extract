@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 def downloads_to_sequence_table(downloads: list[Download], marker: str) -> pd.DataFrame:
+    """Generate sequence table from set of downloads."""
     fasta_files = [download for download in downloads if isinstance(download, FastaDownload) and download.marker == marker]
     mseq_files = [download for download in downloads if isinstance(download, MseqDownload) and download.marker == marker]
     assert len(fasta_files) == 1 and len(mseq_files) == 1
@@ -42,6 +43,7 @@ def translate_rank(input):
 
 
 def split_taxonomy_column(taxonomy):
+    """Split taxonomy string into dictionary of ranks and names."""
     items = [part.split("__") for part in taxonomy.split(";")]
     ranks = [(translate_rank(item[0]), item[1]) for item in items]
     if len(ranks) > 0:
@@ -51,6 +53,7 @@ def split_taxonomy_column(taxonomy):
 
 
 def add_lsids(occ):
+    """Add LSIDs in scientificNameID column to occurrence table."""
     taxonomy_ids = occ["taxonomy_id"].unique()
     logger.info(f"Fetching {len(taxonomy_ids)} records from WoRMS")
     matches = dict([(x, pyworms.aphiaRecordByExternalID(x, "ncbi")) for x in taxonomy_ids])
