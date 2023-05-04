@@ -2,6 +2,7 @@ from mgnifyextract.dwc import study_to_dwc
 from mgnifyextract.studies import find_studies, get_study_samples, get_superstudy_studies, get_study
 from mgnifyextract.analyses import get_analysis
 from mgnifyextract.downloads import FastaDownload, MseqDownload, TsvDownload
+from mgnifyextract.silva import get_silva_otus
 import logging
 import json
 
@@ -34,11 +35,5 @@ logging.getLogger("urllib3").setLevel(logging.INFO)
 #downloads = analyses[0].get_downloads()
 #print(downloads)
 
-######### Tara analysis
-#analysis = get_analysis("MGYA00166828")
-
-#########
-
 study = get_superstudy_studies("atlanteco")[0]
-occ, dna = study_to_dwc(study, max_samples=1, markers=["LSU"])
-pass
+occ, dna = study_to_dwc(study, max_samples=1, markers=["LSU", "SSU"], add_lsid=False)
